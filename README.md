@@ -6,7 +6,7 @@ DevResource Hub is a modern, secure, and intelligent platform for developers to 
 
 This application goes beyond basic CRUD by integrating **AI-powered content generation**, secure **HTTP-only authentication**, and a fully responsive interface using **Next.js 16**.
 
-🔗 **Live Deployment:** [Insert Your Vercel Link Here]
+🔗 **Live Deployment:** [https://my-edtech-app.vercel.app]
 📂 **GitHub Repository:** [https://github.com/harshal255/my-edtech-app]
 
 #### Testing User :
