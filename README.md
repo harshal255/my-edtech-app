@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 DevResource Hub
 
-## Getting Started
+**Full-Stack Assignment for House of Edtech**
 
-First, run the development server:
+DevResource Hub is a modern, secure, and intelligent platform for developers to share, discover, and organize useful development resources.
+
+This application goes beyond basic CRUD by integrating **AI-powered content generation**, secure **HTTP-only authentication**, and a fully responsive interface using **Next.js 16**.
+
+🔗 **Live Deployment:** [Insert Your Vercel Link Here]
+📂 **GitHub Repository:** [https://github.com/harshal255/my-edtech-app]
+
+#### Testing User :
+
+**username** : restartmyself@yopmail.com
+**email** : Dev@123456789
+
+---
+
+## ✨ Key Features
+
+### 🧠 Intelligent & Innovative
+
+- **AI-Powered Descriptions:** Integrated **Google Gemini 2.0 Flash Lite** to automatically generate professional descriptions for resources, saving users time and enhancing content quality.
+- **Smart Fallback System:** Implements a robust AI fallback strategy (Lite → Backup Models) to ensure availability even during high traffic.
+
+### 🛡️ Secure & Robust
+
+- **Authentication:** Custom-built secure authentication using **JWT** and **HTTP-Only Cookies** (stateless and secure against XSS).
+- **Data Validation:** Strict type safety and validation using TypeScript and Server Actions.
+- **Middleware Protection:** Protected routes ensure only authenticated users can access the dashboard.
+
+### ⚡ Technical Excellence (Next.js 16)
+
+- **Server Actions:** Utilizes Next.js 16 Server Actions for all data mutations (Create, Update, Delete) for zero-API-boilerplate efficiency.
+- **Real-time UX:** Instant UI updates using `revalidatePath` and optimistic loading states.
+- **Responsive UI:** Beautiful, accessible interface built with **Shadcn UI** and **Tailwind CSS**.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Database:** MongoDB (via Mongoose)
+- **Styling:** Tailwind CSS, Shadcn UI, Lucide React
+- **AI Integration:** Google Gemini API (Generative AI)
+- **Auth:** BCrypt, JSONWebToken (JWT)
+- **Notifications:** Sonner (Toast)
+- **Deployment:** Vercel
+
+---
+
+## 🚀 Getting Started Locally
+
+Follow these steps to run the project on your local machine.
+
+### 1. Clone the Repository
+
+```bash
+git clone [https://github.com/harshal255/my-edtech-app.git](https://github.com/harshal255/my-edtech-app.git)
+cd my-edtech-app
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Variables
+
+Create a .env.local file in the root directory and add the following keys:
+Code snippet
+
+##### Database Connection
+
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/devhub
+
+##### Security
+
+JWT_SECRET=your_super_secret_key_change_this
+NODE_ENV=development
+
+##### AI Integration (Google AI Studio)
+
+GEMINI_API_KEY=your_gemini_api_key
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+    actions: Server Actions for Auth, Database, and AI logic.
+    components: Reusable UI components (Shadcn + Custom Forms).
+    models: Mongoose database schemas.
+    lib: Database connection helper.
+    app: Application pages and routes.
+```
 
-## Learn More
+### 👤 Author Harshal
 
-To learn more about Next.js, take a look at the following resources:
+GitHub: @harshal255
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+LinkedIn: [https://linkedin.com/in/harshalkahar]
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ for the House of Edtech Fullstack Developer Assignment - Dec 2025
