@@ -10,7 +10,7 @@ import { resourceSchema, updateResourceSchema } from "@/lib/schemas";
 export async function createResource(formData: FormData) {
   // Get the current user
   const session = await getSession();
-  console.log("Current session:", session);
+  // console.log("Current session:", session);
 
   if (!session || !session.user) {
     return { error: "Unauthorized: No active session found." };
@@ -28,7 +28,7 @@ export async function createResource(formData: FormData) {
 
   // VALIDATE with Zod
   const validation = resourceSchema.safeParse(rawData);
-  console.log({ validation });
+  // console.log({ validation });
 
   if (!validation.success) {
     const errorMessage = validation.error.issues
