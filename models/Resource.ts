@@ -7,6 +7,7 @@ export interface IResource extends Document {
   category: string;
   votes: number;
   createdAt: Date;
+  userId: string;
 }
 
 const ResourceSchema = new Schema<IResource>(
@@ -16,6 +17,7 @@ const ResourceSchema = new Schema<IResource>(
     link: { type: String, required: true },
     category: { type: String, default: "General" }, // e.g., Frontend, Backend, DevOps
     votes: { type: Number, default: 0 },
+    userId: { type: String, required: true },
   },
   { timestamps: true }
 );

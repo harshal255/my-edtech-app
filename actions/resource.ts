@@ -4,12 +4,40 @@
 import connectToDatabase from "@/lib/db";
 import Resource from "@/models/Resource";
 import { revalidatePath } from "next/cache"; // 👈 This updates the UI automatically after we add data!
+import { getSession } from "./auth";
+import { resourceSchema, updateResourceSchema } from "@/lib/schemas";
 
 export async function createResource(formData: FormData) {
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const link = formData.get("link") as string;
-  const category = formData.get("category") as string;
+  // Get the current user
+  const session = await getSession();
+  console.log("Current session:", session);
+
+  if (!session || !session.user) {
+    return { error: "Unauthorized: No active session found." };
+  }
+
+  const userPayload = session.user as { userId: string };
+  const currentUserId = userPayload.userId;
+
+  const rawData = {
+    title: formData.get("title"),
+    category: formData.get("category"),
+    link: formData.get("link"),
+    description: formData.get("description"),
+  };
+
+  // VALIDATE with Zod
+  const validation = resourceSchema.safeParse(rawData);
+  console.log({ validation });
+
+  if (!validation.success) {
+    const errorMessage = validation.error.issues
+      .map((issue) => issue.message)
+      .join(". ");
+    return { error: errorMessage };
+  }
+
+  const { title, category, link, description } = validation.data;
 
   if (!title || !link) {
     return { error: "Title and Link are required" };
@@ -17,7 +45,13 @@ export async function createResource(formData: FormData) {
 
   try {
     await connectToDatabase();
-    await Resource.create({ title, description, link, category });
+    await Resource.create({
+      title,
+      description,
+      link,
+      category,
+      userId: currentUserId,
+    });
 
     // This tells Next.js: "The data on the dashboard changed, please refresh it!"
     revalidatePath("/dashboard");
@@ -48,7 +82,19 @@ export async function getResources() {
 
 export async function deleteResource(resourceId: string) {
   try {
+    const session = await getSession();
+    if (!session) return { error: "Unauthorized" };
     await connectToDatabase();
+
+    const userPayload = session.user as { userId: string };
+    const currentUserId = userPayload.userId;
+
+    const resource = await Resource.findById(resourceId);
+
+    // fixing bugs
+    if (resource.userId !== currentUserId) {
+      return { error: "You can only delete your own resources" };
+    }
     await Resource.findByIdAndDelete(resourceId);
 
     revalidatePath("/dashboard"); // Refresh the list
@@ -59,14 +105,42 @@ export async function deleteResource(resourceId: string) {
 }
 
 export async function updateResource(formData: FormData) {
-  const id = formData.get("id") as string;
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const link = formData.get("link") as string;
-  const category = formData.get("category") as string;
+  const session = await getSession();
+  if (!session) return { error: "Unauthorized" };
+
+  const rawData = {
+    id: formData.get("id"),
+    title: formData.get("title"),
+    category: formData.get("category"),
+    link: formData.get("link"),
+    description: formData.get("description"),
+  };
+
+  // VALIDATE with Zod
+  const validation = updateResourceSchema.safeParse(rawData);
+  console.log({ validation });
+
+  if (!validation.success) {
+    const errorMessage = validation.error.issues
+      .map((issue) => issue.message)
+      .join(". ");
+    return { error: errorMessage };
+  }
+
+  const { title, category, link, description, id } = validation.data;
 
   try {
     await connectToDatabase();
+
+    const userPayload = session.user as { userId: string };
+    const currentUserId = userPayload.userId;
+
+    const resource = await Resource.findById(id);
+
+    // fixing bugs
+    if (resource.userId !== currentUserId) {
+      return { error: "You can only update your own resources" };
+    }
     await Resource.findByIdAndUpdate(id, {
       title,
       description,

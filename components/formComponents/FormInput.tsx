@@ -1,13 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface FormInputProps {
+interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
     name: string;
     type?: string;
     placeholder?: string;
     required?: boolean;
-    defaultValue?: string | number;
+    value?: string | number;
 }
 
 export function FormInput({
@@ -16,7 +16,8 @@ export function FormInput({
     type = "text",
     placeholder,
     required = false,
-    defaultValue,
+    value,
+    ...props
 }: FormInputProps) {
     return (
         <div className="grid gap-2 mb-4">
@@ -27,7 +28,9 @@ export function FormInput({
                 type={type}
                 placeholder={placeholder}
                 required={required}
-                defaultValue={defaultValue}
+                value={value}
+                // 👇 "...props" spreads everything else (onChange, value) onto the input
+                {...props}
             />
         </div>
     );

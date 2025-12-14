@@ -5,9 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { EditResourceModal } from "@/components/EditResourceModal";
 import { DeleteResourceBtn } from "@/components/DeleteResourceBtn";
+import { getSession } from "@/actions/auth";
 
 export default async function DashboardPage() {
     const resources = await getResources();
+
+    const session = await getSession();
+    const userPayload = session?.user as { userId: string };
+    const currentUserId = userPayload.userId;
 
     return (
         <div className="min-h-screen p-8 bg-gray-50">
@@ -48,10 +53,14 @@ export default async function DashboardPage() {
                                         Visit Link <ExternalLink size={14} />
                                     </a>
 
-                                    {/* Actions: Edit & Delete */}
+                                    {/* Actions: Edit & Delete ONLY SHOW IF IDs MATCH*/}
                                     <div className="flex gap-1">
-                                        <EditResourceModal resource={res} />
-                                        <DeleteResourceBtn id={res._id} />
+                                        {currentUserId === res.userId && (
+                                            <>
+                                                <EditResourceModal resource={res} />
+                                                <DeleteResourceBtn id={res._id} />
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </CardContent>

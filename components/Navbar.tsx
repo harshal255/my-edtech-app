@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { LogOut, User } from "lucide-react";
 import { toast } from "sonner";
 
-export function Navbar() {
+export function Navbar({ user }: { user?: { userId: string } }) {
     const router = useRouter();
 
     async function handleLogout() {
@@ -23,6 +23,7 @@ export function Navbar() {
         toast.success("Logged out successfully");
         router.push("/login");
     }
+
 
     return (
         <nav className="border-b bg-white px-8 py-3 flex justify-between items-center">
@@ -32,7 +33,7 @@ export function Navbar() {
             </Link>
 
             {/* Profile Dropdown */}
-            <div className="flex items-center gap-4">
+            {user ? <div className="flex items-center gap-4">
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none" suppressHydrationWarning>
                         <Avatar className="cursor-pointer hover:bg-gray-100 transition-colors flex items-center justify-center">
@@ -58,7 +59,8 @@ export function Navbar() {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </div>
+            </div> : null}
+
         </nav>
     );
 }

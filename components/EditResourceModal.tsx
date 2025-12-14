@@ -22,9 +22,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { FormInput } from "./formComponents/FormInput";
 import { SubmitButton } from "./formComponents/SubmitButton";
 import { toast } from "sonner";
-import { Pencil } from "lucide-react"; // Icon for Edit
+import { Loader2, Pencil, Sparkles } from "lucide-react";
+import { useAIGenerator } from "@/hooks/useAIGenerator";
 
-// Define what data we expect
 interface EditProps {
     resource: {
         _id: string;
@@ -38,6 +38,19 @@ interface EditProps {
 export function EditResourceModal({ resource }: EditProps) {
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [titleValue, setTitleValue] = useState(resource.title);
+    const [linkValue, setLinkValue] = useState(resource.link);
+    const [descValue, setDescValue] = useState(resource.description);
+    const [categoryValue, setCategoryValue] = useState(resource.category);
+
+    const { isGenerating, generate } = useAIGenerator();
+
+    async function handleGenerateAI() {
+        const text = await generate(titleValue, resource.category, linkValue);
+        if (text) {
+            setDescValue(text);
+        }
+    }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -71,12 +84,14 @@ export function EditResourceModal({ resource }: EditProps) {
                     {/* Hidden input to store the ID so the backend knows which one to update */}
                     <input type="hidden" name="id" value={resource._id} />
 
-                    <FormInput label="Title" name="title" required defaultValue={resource.title} />
-                    <FormInput label="Link" name="link" required defaultValue={resource.link} />
+                    <FormInput label="Title" name="title" value={titleValue} onChange={(e) => setTitleValue(e.target.value)} />
+                    <FormInput label="Link" name="link" value={linkValue} onChange={(e) => setLinkValue(e.target.value)} />
+
+
 
                     <div className="grid gap-2">
                         <Label htmlFor="category">Category</Label>
-                        <Select name="category" defaultValue={resource.category}>
+                        <Select name="category" value={categoryValue} onValueChange={setCategoryValue} >
                             <SelectTrigger>
                                 <SelectValue placeholder="Select category" />
                             </SelectTrigger>
@@ -91,8 +106,24 @@ export function EditResourceModal({ resource }: EditProps) {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="description">Description</Label>
-                        <Textarea name="description" defaultValue={resource.description} />
+                        <div className="flex justify-between items-center">
+                            <Label htmlFor="description">Description</Label>
+                            <button
+                                type="button"
+                                onClick={handleGenerateAI}
+                                disabled={isGenerating}
+                                className="text-xs flex items-center gap-1 text-purple-600 hover:text-purple-800 font-medium"
+                            >
+                                {isGenerating ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                ) : (
+                                    <Sparkles className="h-3 w-3" />
+                                )}
+                                Generate with AI
+                            </button>
+                        </div>
+
+                        <Textarea name="description" value={descValue} onChange={(e) => setDescValue(e.target.value)} />
                     </div>
 
                     <SubmitButton isLoading={isLoading}>Update Resource</SubmitButton>
