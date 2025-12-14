@@ -80,7 +80,7 @@ export function EditResourceModal({ resource }: EditProps) {
                     <DialogTitle>Edit Resource</DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+                <form onSubmit={handleSubmit} className="grid gap-4 py-4" key={open ? "open" : "closed"}>
                     {/* Hidden input to store the ID so the backend knows which one to update */}
                     <input type="hidden" name="id" value={resource._id} />
 

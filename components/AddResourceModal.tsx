@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { createResource } from "@/actions/resource";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +33,7 @@ export function AddResourceModal() {
     const [linkValue, setLinkValue] = useState("");
     const [descValue, setDescValue] = useState("");
     const [categoryValue, setCategoryValue] = useState("General");
+
 
     const { isGenerating, generate } = useAIGenerator();
 
@@ -73,7 +74,7 @@ export function AddResourceModal() {
                     </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+                <form onSubmit={handleSubmit} className="grid gap-4 py-4" key={open ? "open" : "closed"}>
                     <FormInput
                         label="Title"
                         name="title"
