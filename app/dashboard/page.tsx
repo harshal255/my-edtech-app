@@ -6,6 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { EditResourceModal } from "@/components/EditResourceModal";
 import { DeleteResourceBtn } from "@/components/DeleteResourceBtn";
 import { getSession } from "@/actions/auth";
+import { ViewResourceModal } from "../../components/ViewResourceModal";
 
 export default async function DashboardPage() {
     const resources = await getResources();
@@ -61,6 +62,7 @@ export default async function DashboardPage() {
                                                 <DeleteResourceBtn id={res._id} />
                                             </>
                                         )}
+                                        <ViewResourceModal resource={res} />
                                     </div>
                                 </div>
                             </CardContent>
